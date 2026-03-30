@@ -150,7 +150,12 @@ public class CortexDecoder extends CordovaPlugin {
                 Log.d(TAG, "This should never happen");
               }
             } else if (resultCode == Activity.RESULT_CANCELED) {
-              this.callbackContext.success(new JSONArray());
+              String reason = intent != null ? intent.getStringExtra("reason") : null;
+              if ("license_invalid".equals(reason)) {
+                this.callbackContext.error("CortexDecoder: License invalid or expired");
+              } else {
+                this.callbackContext.success(new JSONArray());
+              }
             } else {
               //this.error(new PluginResult(PluginResult.Status.ERROR), this.callback);
               this.callbackContext.error("Unexpected error");
