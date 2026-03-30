@@ -103,9 +103,27 @@ public class ScannerActivity extends Activity implements CortexDecoderLibraryCal
           case LicenseStatus_LicenseExpired:
             Date date = mCortexDecoderLibrary.getLicenseExpirationDate();
             Toast.makeText(getApplicationContext(), "License Expired: "+formatExpireDate(date), Toast.LENGTH_LONG).show();
+            mMainHandler.post(new Runnable() {
+              @Override
+              public void run() {
+                Intent result = new Intent();
+                result.putExtra("reason", "license_invalid");
+                setResult(RESULT_CANCELED, result);
+                finish();
+              }
+            });
             break;
           default:
             Toast.makeText(getApplicationContext(), "License Invalid", Toast.LENGTH_SHORT).show();
+            mMainHandler.post(new Runnable() {
+              @Override
+              public void run() {
+                Intent result = new Intent();
+                result.putExtra("reason", "license_invalid");
+                setResult(RESULT_CANCELED, result);
+                finish();
+              }
+            });
             break;
         }
       }
